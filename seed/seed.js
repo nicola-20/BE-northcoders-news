@@ -3,9 +3,6 @@ const { Topic, User, Article, Comment } = require('../models')
 const { formatArticles, formatComments } = require('../utils')
 
 const seedDB = ({ topicData, userData, articleData, commentData }) => {
-// seed topics and users
-// seed articles - needs topics and users
-// seed comments - needs users and articles
   console.log('Seeding the database..')
   return mongoose.connection.dropDatabase()
   .then(() => {

@@ -1,7 +1,6 @@
 const _ = require('lodash')
 
 const formatArticles = (articleData, topicDocs, userDocs) => {
-  // title, body, votes, created_at, belongs_to, created_by
   return articleData.map((article) => {
     return {
       ...article,
@@ -13,7 +12,6 @@ const formatArticles = (articleData, topicDocs, userDocs) => {
 }
 
 const formatComments = (commentData, userDocs, articleDocs) => {
-  //body, votes, created_at, belongs_to, created_by
   return commentData.map((comment) => {
     return {
       ... comment,

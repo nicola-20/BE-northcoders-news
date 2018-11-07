@@ -4,7 +4,7 @@ const { DB_URL, datapath } = require('../config');
 const rawData = require(`../seed/${datapath}`)
 
 mongoose
-  .connect(DB_URL)
+  .connect(DB_URL, { useNewUrlParser: true })
   .then(() => {
     console.log(`Connected to ${DB_URL}`)
     return seedDB(rawData)

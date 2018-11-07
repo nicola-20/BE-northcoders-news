@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Northcoder News API</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+</head>
+<body>
+
+  <div class="page-header">
+    <h1>Northcoder News API <small>(version 1)</small></h1>
+    <p>http://url.com</p>
+    <h3>Welcome</h3>
+    <p>Welcome to the documentation for the NC News API</p>
+    <h3>Getting started</h3>
+    <p>Take a look at the following endpoints to find out what you can do inside the NC News API</p>
+  </div>
+
+  <div class="pan">
+    <div class="panhead">
+      <h2>/api</h2>
+    </div>
+    <div class="panbody">
+      <h3>/api</h3>
+      <p>Brings you to this very page!</p>
+    </div>
+  </div>
+
+  <div class="pan">
+      <div class="panhead">
+        <h2>/topics</h2>
+      </div>
+      <div class="panbody">
+        <h3>/topics</h3>
+        <p>GET: Get all the topics</p>
+        <h3>/topics/:topic_slug/articles</h3>
+        <p>GET: Get all the articles for a certain topic</p>
+        <p>POST: Add a new article to a topic. This requires a JSON with title and body</p>
+      </div>
+    </div>
+
+    <div class="pan">
+        <div class="panhead">
+          <h2>/users</h2>
+        </div>
+        <div class="panbody">
+          <h3>/users</h3>
+          <p>GET: Get all the users</p>
+          <h3>/users/:username</h3>
+          <p>GET: Get a user by their username</p>
+        </div>
+      </div>
+
+    <div class="pan">
+        <div class="panhead">
+          <h2>/articles</h2>
+        </div>
+        <div class="panbody">
+          <h3>/articles</h3>
+          <p>GET: Get all the articles</p>
+          <h3>/articles/:article_id</h3>
+          <p>GET: Get an individual article</p>
+          <p>PATCH: Increment or decrement the votes of an article by one using a query. e.g. ?votes=up, ?votes=down</p>
+          <h3>/articles/:article_id/comments</h3>
+          <p>GET: Get all the comments for an individual article</p>
+          <p>POST: Add a new comment to an article. This requires a JSON object with body and created_by</p>
+        </div>
+      </div>
+
+      <div class="pan">
+          <div class="panhead">
+            <h2>/comments</h2>
+          </div>
+          <div class="panbody">
+            <h3>/comments</h3>
+            <p>GET: Get all the comments</p>
+            <h3>/comments/:comment_id</h3>
+            <p>GET: Get a comment by its ID</p>
+            <p>PATCH: Increment of decrement the votes of a comment by one. Requires a query of vote = up or down. e.g. ?vote=up</p>
+            <p>DELETE: Deletes a comment</p>
+          </div>
+        </div>
+
+</body>
+</html>

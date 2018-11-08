@@ -17,57 +17,32 @@ const getArticles = (req, res, next) => {
   .then(( articles ) => {
     res.status(200).send({ articles })
   })
+  .catch(next)
 }
-
-// const getArticleByArticleID = (req, res, next) => {
-//   const { article_id } = req.params
-//   Article.findById(article_id)
-//   .populate('created_by', 'username name -_id')
-//   .then((article) => {
-//     article.comment_count
-//     res.status(200).send({ article })
-//   })
-// }
-
-// const getArticleByArticleID = (req, res, next) => {
-//   const { article_id } = req.params
-//   return Promise.all([
-//     Article.findById(article_id).populate('created_by', 'username name -_id'),
-//     Comment.countDocuments( { belongs_to: article_id } )
-//   ])
-//   .then(([article, numComments]) => {
-//     const { _id, title, body, created_by, votes, created_at, belongs_to } = article
-//     return { _id, title, body, created_by, votes, created_at, belongs_to, comment_count: numComments }
-//   })
-//   .then((article) => {
-//     res.status(200).send({ article })
-//   })
-// }
 
 const getArticleByArticleID = (req, res, next) => {
   const { article_id } = req.params
   Article.findById(article_id)
   .populate('created_by', 'username name -_id')
   .then((article) => {
-    return addCommentCount(article)
+    if (!article) return Promise.reject({ status: 404, msg: 'Article not found...' })
+    else return addCommentCount(article)
   })
   .then((article) => {
     res.status(200).send({ article })
   })
+  .catch(next)
 }
 
 const updateArticleVotes = (req, res, next) => {
-  // Increment or Decrement the votes of an article by one. This route requires a vote query of 'up' or 'down'
-  // e.g: `/api/articles/:article_id?vote=up`
-  // PATCH 
   const { article_id } = req.params
   const { vote } = req.query
   const voteChange = vote === 'up' ? 1 : vote === 'down' ? -1 : 0
   Article.findOneAndUpdate( { _id: article_id }, { $inc: { votes: voteChange } }, { new: true } )
   .then((article) => {
-    console.log(article)
     res.send( { article } )
   })
+  .catch(next)
 }
 
 const getArticlesByTopic = (req, res, next) => {
@@ -80,6 +55,7 @@ const getArticlesByTopic = (req, res, next) => {
   .then(( articles ) => {
     res.status(200).send({ articles })
   })
+  .catch(next)
 }
 
 const addArticle = (req, res, next) => {
@@ -88,8 +64,9 @@ const addArticle = (req, res, next) => {
   article = new Article({ title, body, created_by, belongs_to: topic_slug })
   article.save()
     .then((article) => {
-      res.send({ article })
+      res.status(201).send({ article })
     })
+  .catch(next)
 }
 
 module.exports = { getArticles, getArticleByArticleID, updateArticleVotes, getArticlesByTopic, addArticle }

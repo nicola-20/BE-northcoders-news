@@ -7,6 +7,7 @@ const getComments = (req, res, next) => {
   .then((comments) => {
     res.status(200).send({ comments })
   })
+  .catch(next)
 }
 
 const getCommentByCommentID = (req, res, next) => {
@@ -17,16 +18,19 @@ const getCommentByCommentID = (req, res, next) => {
   .then((comment) => {
     res.status(200).send({ comment })
   })
+  .catch(next)
 }
 
 const getCommentsByArticleID = (req, res, next) => {
   const { article_id } = req.params
-  Comment.find( { belongs_to: article_id } )
+  Comment
+  .find( { belongs_to: article_id } )
   .populate('belongs_to', 'title -_id')
   .populate('created_by', 'name -_id')
   .then((comments) => {
     res.status(200).send({ comments })
   })
+  .catch(next)
 }
 
 const addCommentToArticle = (req, res, next) => {
@@ -43,9 +47,10 @@ const addCommentToArticle = (req, res, next) => {
   // comment.save()
   // .populate('belongs_to', 'title -_id')
   // .populate('created_by', 'name -_id')
-    .then((comment) => {
-      res.send({ comment })
-    })
+  .then((comment) => {
+    res.status(201).send({ comment })
+  })
+  .catch(next)
 }
 
 const updateCommentVotes = (req, res, next) => {
@@ -56,9 +61,9 @@ const updateCommentVotes = (req, res, next) => {
   const voteChange = vote === 'up' ? 1 : vote === 'down' ? -1 : 0
   Comment.findOneAndUpdate( { _id: comment_id }, { $inc: { votes: voteChange } }, { new: true } )
   .then((comment) => {
-    console.log(comment)
     res.send( { comment } )
   })
+  .catch(next)
 }
 
 const deleteComment = (req, res, next) => {
@@ -66,9 +71,9 @@ const deleteComment = (req, res, next) => {
   const { comment_id } = req.params
   Comment.findByIdAndRemove( comment_id )
   .then(() => {
-    console.log('Comment deleted')
-    res.send('Comment was deleted')
+    res.status(200).send({message: 'Comment was deleted'})
   })
+  .catch(next)
 }
 
 module.exports = { getComments, getCommentsByArticleID, addCommentToArticle, getCommentByCommentID, updateCommentVotes, deleteComment }

@@ -34,7 +34,10 @@ app.use('/*', (req, res, next) => {
 
 app.use((err, req, res, next) => {
     console.log(err);
-    res.status(500).send({ msg: 'Internal server error' })
+    console.log(err.message)
+    if (err.name === "CastError") err.status = 400;
+    res.status(err.status).send(err.message || err.msg)
+    // res.status(500).send({ msg: 'Internal server error' })
 })
 
 module.exports = app;

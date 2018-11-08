@@ -5,14 +5,16 @@ const getUsers = (req, res, next) => {
   .then((users) => {
     res.status(200).send({ users })
   })
+  .catch(next)
 }
 
 const getUserByUsername = (req, res, next) => {
   const { username } = req.params
-  User.find( { username: username } )
+  User.findOne( { username: username } )
   .then((user) => {
     res.status(200).send({ user })
   })
+  .catch(next)
 }
 
 module.exports = { getUsers, getUserByUsername }

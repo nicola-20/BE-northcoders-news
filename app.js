@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const apiRouter = require('./routes/api');
-const { DB_URL } = require('./config')
+const { DB_URL } = process.env.NODE_ENV === 'production' ? process.env : require('./config');
 
 mongoose.connect(DB_URL, { useNewUrlParser: true })
   .then(() => {

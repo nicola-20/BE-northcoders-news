@@ -1,7 +1,11 @@
 const { Comment } = require('../models')
 
 const getComments = (req, res, next) => {
-  Comment.find()
+  const sortField = req.query.sort
+  const sortBy = req.query.by === 'asc' ? 1 : req.query.by === 'desc' ? -1 : 0
+  let sort = {}
+  sort[sortField] = sortBy
+  Comment.find().sort({[sortField]: sortBy})
   .populate('belongs_to', 'title -_id')
   .populate('created_by', 'name -_id')
   .then((comments) => {
@@ -24,8 +28,13 @@ const getCommentByCommentID = (req, res, next) => {
 
 const getCommentsByArticleID = (req, res, next) => {
   const { article_id } = req.params
+  const sortField = req.query.sort
+  const sortBy = req.query.by === 'asc' ? 1 : req.query.by === 'desc' ? -1 : 0
+  let sort = {}
+  sort[sortField] = sortBy
   Comment
   .find( { belongs_to: article_id } )
+  .sort({[sortField]: sortBy})
   .populate('belongs_to', 'title -_id')
   .populate('created_by', 'name -_id')
   .then((comments) => {

@@ -10,7 +10,13 @@ const addCommentCount = (article) => {
 }
 
 const getArticles = (req, res, next) => {
-  return Article.find().populate('created_by', 'username name -_id')
+  const sortField = req.query.sort
+  const sortBy = req.query.by === 'asc' ? 1 : req.query.by === 'desc' ? -1 : 0
+  let sort = {}
+  sort[sortField] = sortBy
+  return Article.find()
+  .sort({[sortField]: sortBy})
+  .populate('created_by', 'username name -_id')
   .then((articles) => {
     return Promise.all(articles.map(addCommentCount))
   })
@@ -53,7 +59,12 @@ const updateArticleVotes = (req, res, next) => {
 
 const getArticlesByTopic = (req, res, next) => {
   const { topic_slug } = req.params
+  const sortField = req.query.sort
+  const sortBy = req.query.by === 'asc' ? 1 : req.query.by === 'desc' ? -1 : 0
+  let sort = {}
+  sort[sortField] = sortBy
   Article.find( { belongs_to: topic_slug } )
+  .sort({[sortField]: sortBy})
   .populate('created_by', 'username name -_id')
   .then((articles) => {
     return Promise.all(articles.map(addCommentCount))

@@ -16,12 +16,10 @@ Dependencies:
 
 ```
 body-parser: ^1.15.2
-ejs: ^2.6.1
 express: ^4.16.3
 heroku: ^7.18.5
 lodash: ^4.17.11
 mongoose: ^5.3.10
-pg-promise: ^8.5.1
 ```
 
 Dev Dependencies:
@@ -176,9 +174,11 @@ To deploy this app, use mLab to host the database, then create the app within He
 ### Built With:
 - Node.js
 - MongoDB
+- Mongoose
 - Express
 - mLab
 - Heroku
+- Lodash
 
 ### Author
 

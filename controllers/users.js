@@ -1,7 +1,11 @@
 const { User } = require('../models')
 
 const getUsers = (req, res, next) => {
-  User.find()
+  const sortField = req.query.sort
+  const sortBy = req.query.by === 'asc' ? 1 : req.query.by === 'desc' ? -1 : 0
+  let sort = {}
+  sort[sortField] = sortBy
+  User.find().sort({[sortField]: sortBy})
   .then((users) => {
     res.status(200).send({ users })
   })

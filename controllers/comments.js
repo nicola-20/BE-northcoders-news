@@ -16,6 +16,7 @@ const getCommentByCommentID = (req, res, next) => {
   .populate('belongs_to', 'title -_id')
   .populate('created_by', 'name -_id')
   .then((comment) => {
+    if (!comment) return Promise.reject({ status: 404, msg: `Comment not found for ID: ${comment_id}` })
     res.status(200).send({ comment })
   })
   .catch(next)
@@ -28,6 +29,7 @@ const getCommentsByArticleID = (req, res, next) => {
   .populate('belongs_to', 'title -_id')
   .populate('created_by', 'name -_id')
   .then((comments) => {
+    if (!comments[0]) return Promise.reject({ status: 404, msg: `Comments not found for Article ID: ${article_id}` })
     res.status(200).send({ comments })
   })
   .catch(next)
@@ -44,9 +46,6 @@ const addCommentToArticle = (req, res, next) => {
   .then(() => {
     return Comment.populate(comment, {path: 'created_by', select: 'name -_id'})
   })
-  // comment.save()
-  // .populate('belongs_to', 'title -_id')
-  // .populate('created_by', 'name -_id')
   .then((comment) => {
     res.status(201).send({ comment })
   })
@@ -54,8 +53,6 @@ const addCommentToArticle = (req, res, next) => {
 }
 
 const updateCommentVotes = (req, res, next) => {
-  // Increment or Decrement the votes of a comment by one. This route requires a vote query of 'up' or 'down'
-  // e.g: `/api/comments/:comment_id?vote=down`
   const { comment_id } = req.params
   const { vote } = req.query
   const voteChange = vote === 'up' ? 1 : vote === 'down' ? -1 : 0
@@ -67,7 +64,6 @@ const updateCommentVotes = (req, res, next) => {
 }
 
 const deleteComment = (req, res, next) => {
-  // Deletes a comment
   const { comment_id } = req.params
   Comment.findByIdAndRemove( comment_id )
   .then(() => {

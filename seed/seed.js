@@ -3,10 +3,10 @@ const { Topic, User, Article, Comment } = require('../models')
 const { formatArticles, formatComments } = require('../utils')
 
 const seedDB = ({ topicData, userData, articleData, commentData }) => {
-  console.log('Seeding the database..')
+  // console.log('Seeding the database..')
   return mongoose.connection.dropDatabase()
   .then(() => {
-    console.log('Dropped the database')
+    // console.log('Dropped the database')
     return Promise.all([
       Topic.insertMany(topicData),
       User.insertMany(userData)

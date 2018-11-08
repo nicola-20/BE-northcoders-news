@@ -26,7 +26,6 @@ describe('/api', () => {
 
   // TOPICS
   describe('/topics', () => {
-
     it('GET - returns status 200 and array of all the topics', () => {
       return request
         .get('/api/topics')
@@ -37,6 +36,7 @@ describe('/api', () => {
           expect(topics[1].slug).to.equal(topicDocs[1].slug)
         })
     });
+
     describe('/topics/:topic_slug/articles', () => {
       it('GET - returns status 200 and array of all articles for relevant topic', () => {
         return request 
@@ -72,7 +72,6 @@ describe('/api', () => {
 
   // USERS
   describe('/users', () => {
-
     it('GET - returns status 200 and array of all the users', () => {
       return request
         .get('/api/users')
@@ -82,6 +81,7 @@ describe('/api', () => {
           expect(users[0].username).to.equal(userDocs[0].username)
         })
     });
+
     describe('/users/:username', () => {
       it('GET - returns status 200 and the required user file ', () => {
         return request
@@ -98,7 +98,6 @@ describe('/api', () => {
 
   // ARTICLES
   describe('/articles', () => {
-
     it('GET - returns status 200 and array of all the articles', () => {
       return request
         .get('/api/articles')
@@ -136,22 +135,7 @@ describe('/api', () => {
             expect(article.title).to.equal(articleDocs[1].title)
           })
       });
-      // it('ERR GET - returns status 400 for an invalid ID', () => {
-      //   return request
-      //     .get(`/api/articles/123`)
-      //     .expect(400)
-      //     .then((res) => {
-      //       expect(res.body.msg).to.equal('Cast to ObjectId failed for value "123" at path "_id" for model "articles"')
-      //     })
-      // });
-      // it('GET - returns status 404 for a valid mongo ID that does not exist', () => {
-      //   return request
-      //     .get(`/api/articles/${wrongID}`)
-      //     .expect(404)
-      //     .then((res) => {
-      //       expect(res.body.msg).to.equal(`Article not found for ID: ${wrongID}`)
-      //     })
-      // });
+
 
     });
     describe('/articles/:article_id/comments', () => {
@@ -190,7 +174,6 @@ describe('/api', () => {
 
   // COMMENTS
   describe('/comments', () => {
-
     it('GET - returns status 200 and array of all the comments', () => {
       return request
       .get(`/api/comments`)
@@ -253,13 +236,200 @@ describe('/api', () => {
   });
 
   // ERROR HANDLING
-  xdescribe('errors', () => {
-    it('', () => {
-      
+  describe('errors', () => {
+
+    // Path not found Errors
+    describe('/*', () => {
+      it('GET - returns status 404 when path is not valid', () => {
+        return request
+          .get('/api/news')
+          .expect(404)
+          .then(( { body } ) => {
+            expect(body.msg).to.equal('Path not found')
+          })
+      });
+      it('GET - returns status 404 when path is not valid', () => {
+        return request
+          .get('/hi')
+          .expect(404)
+          .then(( { body } ) => {
+            expect(body.msg).to.equal('Path not found')
+          })
+      });
+      it('GET - returns status 404 when path is not valid', () => {
+        return request
+          .get('/api/people')
+          .expect(404)
+          .then(( { body } ) => {
+            expect(body.msg).to.equal('Path not found')
+          })
+      });
     });
-  });
 
+    // api
+    describe('/api', () => {
+      // Errors - topics
+      describe('/topics/:topic_slug/articles', () => {
+        it('GET - Returns status 404 when topic_slug does not match any topics', () => {
+          const testSlug = 'running'
+          return request
+            .get(`/topics/${testSlug}/articles`)
+            .expect(404)
+            .then(( { body } ) => {
+              expect(body.msg).to.equal(`Path not found`)
+            })
+        });
+        it('POST - Returns status 400 when posting a new article which does not have a valid user', () => {
+          const testUser = 'username'
+          const postedArticle = {
+            "title": "new article",
+            "body": "This is my new article content",
+            "created_by": testUser
+          }
+          return request
+            .post(`/api/topics/${topicDocs[0].slug}/articles`)
+            .send(postedArticle)
+            .expect(400)
+            .then(( { body } ) => {
+              expect(body.msg).to.equal(`articles validation failed: created_by: Cast to ObjectID failed for value "${testUser}" at path "created_by"`)
+            })
+        });
+        it('POST - Returns status 400 when posting a new article which does not have a body', () => {
+          const postedArticle = {
+            "title": "new article",
+            "created_by": `${userDocs[0]._id}`
+          }
+          return request
+            .post(`/api/topics/${topicDocs[0].slug}/articles`)
+            .send(postedArticle)
+            .expect(400)
+            .then(( { body } ) => {
+              expect(body.msg).to.equal("articles validation failed: body: Path `body` is required.")
+            })
+        });
+      });
+
+      // Errors - users
+      describe('/users/:username', () => {
+        it('GET - Returns status 404 when username does not match a user in the database', () => {
+          const testUsername = 'nicola-20'
+          return request
+          .get(`/api/users/${testUsername}`)
+          .expect(404)
+          .then(( { body } ) => {
+            expect(body.msg).to.equal(`User not found with username ${testUsername}`)
+          })
+        });
+      });
+
+      // Errors - articles
+      describe('/articles/:article_id', () => {
+        it('GET - returns status 400 for an invalid ID', () => {
+          const testID = 1
+          return request
+            .get(`/api/articles/${testID}`)
+            .expect(400)
+            .then(( { body } ) => {
+              expect(body.msg).to.equal(`Cast to ObjectId failed for value "${testID}" at path "_id" for model "articles"`)
+            })
+        });
+        it('GET - returns status 404 for a valid mongo ID that does not exist in articles', () => {
+          return request
+            .get(`/api/articles/${wrongID}`)
+            .expect(404)
+            .then((res) => {
+              expect(res.body.msg).to.equal(`Article not found for ID: ${wrongID}`)
+            })
+        });
+        it('PATCH - returns status 404 when trying to update article with a valid mongo ID that does not exist in articles', () => {
+          return request
+            .get(`/api/articles/${wrongID}?vote=up`)
+            .expect(404)
+            .then((res) => {
+              expect(res.body.msg).to.equal(`Article not found for ID: ${wrongID}`)
+            })
+        });
+        it('PATCH - returns status 400 when query value used is not valid', () => {
+          const testQueryValue = 'maybe'
+          return request
+            .patch(`/api/articles/${articleDocs[0]._id}?vote=${testQueryValue}`)
+            .expect(400)
+            .then(( { body } ) => {
+              expect(body.msg).to.equal(`"${testQueryValue}" is not a valid value for this query`)
+            })
+        });
+        it('PATCH - returns status 400 when query is not a valid query', () => {
+          const testQuery = 'votes'
+          return request
+            .patch(`/api/articles/${articleDocs[0]._id}?${testQuery}=yes`)
+            .expect(400)
+            .then(( { body } ) => {
+              expect(body.msg).to.equal(`"${testQuery}" is not a valid query`)
+            })
+        });
+      });
+
+      describe('/articles/:article_id/comments', () => {
+        it('GET - returns 404 when trying to retrieve comments for an article where ID doesnt exist within articles', () => {
+          return request
+          .get(`/api/articles/${wrongID}/comments`)
+          .expect(404)
+          .then((res) => {
+            expect(res.body.msg).to.equal(`Comments not found for Article ID: ${wrongID}`)
+          })
+        });
+        it('POST - Returns status 400 when posting a new comment which does not have a body', () => {
+          const postedComment = { 
+            "created_by": `${userDocs[1]._id}`
+          }
+          return request
+            .post(`/api/articles/${articleDocs[0]._id}/comments`)
+            .send(postedComment)
+            .expect(400)
+            .then(( { body } ) => {
+              expect(body.msg).to.equal("comments validation failed: body: Path `body` is required.")
+            })
+        });
+        it('POST - Returns status 400 when posting a new comment which does not have a valid userID', () => {
+          const testUser = 123
+          const postedComment = {
+            "body": "This is my new comment", 
+            "created_by": testUser
+          }
+          return request
+            .post(`/api/articles/${articleDocs[0]._id}/comments`)
+            .send(postedComment)
+            .expect(400)
+            .then(( { body } ) => {
+              expect(body.msg).to.equal(`comments validation failed: created_by: Cast to ObjectID failed for value "${testUser}" at path "created_by"`)
+            })
+        });
+      });
+
+
+      // Errors - comments
+      describe('/comments/:comment_id', () => {
+        it('GET - returns status 400 for an invalid ID', () => {
+          const testID = 11
+          return request
+            .get(`/api/comments/${testID}`)
+            .expect(400)
+            .then(( { body } ) => {
+              expect(body.msg).to.equal(`Cast to ObjectId failed for value "${testID}" at path "_id" for model "comments"`)
+            })
+        });
+        it('GET - returns status 404 for a valid mongo ID that does not exist in comments', () => {
+          return request
+            .get(`/api/comments/${wrongID}`)
+            .expect(404)
+            .then((res) => {
+              expect(res.body.msg).to.equal(`Comment not found for ID: ${wrongID}`)
+            })
+        });
+
+      });
+
+    });
+
+  }); // End of Error Handling Testing
 });
-
-// 400 Bad request /api/topics/banana - expecting mongo_id
-// 404 Not found /api/topics/sbdhf3990rbd (mongo id) but not in our collection 

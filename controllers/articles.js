@@ -25,7 +25,7 @@ const getArticleByArticleID = (req, res, next) => {
   Article.findById(article_id)
   .populate('created_by', 'username name -_id')
   .then((article) => {
-    if (!article) return Promise.reject({ status: 404, msg: 'Article not found...' })
+    if (!article) return Promise.reject({ status: 404, msg: `Article not found for ID: ${article_id}` })
     else return addCommentCount(article)
   })
   .then((article) => {
@@ -40,6 +40,12 @@ const updateArticleVotes = (req, res, next) => {
   const voteChange = vote === 'up' ? 1 : vote === 'down' ? -1 : 0
   Article.findOneAndUpdate( { _id: article_id }, { $inc: { votes: voteChange } }, { new: true } )
   .then((article) => {
+    if(!vote) {
+      return Promise.reject({ status: 400, msg: `"${Object.keys(req.query)[0]}" is not a valid query` })
+    }
+    if (voteChange === 0) {
+      return Promise.reject({ status: 400, msg: `"${vote}" is not a valid value for this query` })
+    }
     res.send( { article } )
   })
   .catch(next)
@@ -64,6 +70,9 @@ const addArticle = (req, res, next) => {
   article = new Article({ title, body, created_by, belongs_to: topic_slug })
   article.save()
     .then((article) => {
+      if (!article) {
+        return Promise.reject({ status: 400, msg: `"${req.body}" is not a valid article` })
+      }
       res.status(201).send({ article })
     })
   .catch(next)

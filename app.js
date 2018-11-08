@@ -33,11 +33,38 @@ app.use('/*', (req, res, next) => {
 // app.use(handle500s);
 
 app.use((err, req, res, next) => {
-    console.log(err);
-    console.log(err.message)
-    if (err.name === "CastError") err.status = 400;
-    res.status(err.status).send(err.message || err.msg)
-    // res.status(500).send({ msg: 'Internal server error' })
+// console.log(err)
+  if (err.status) { // if err has a status
+
+    if (err.msg || err.message) { // if err has a message
+      res.status(err.status).send(err)
+
+    } else { // if err has status but no message
+      err.msg = "Error"
+      res.status(err.status).send(err)
+    }
+
+  } else { // if error doesnt have a status yet
+
+    if (err.name === "CastError") {
+      err.status = 400
+      err.msg = err.message
+    } else if (err.name === "ValidationError") {
+      err.status = 400
+      err.msg = err.message
+    } else {
+      err.status = 500
+    } 
+
+    res.status(err.status).send(err)
+  }
+    
+    // 400 Bad Request
+    // 404 Not Found
+    // 405 Method Not Allowed
+    // 500 Internal Server Error
+  
+    // res.status(500).send({ msg: 'Internal Server Error' })
 })
 
 module.exports = app;

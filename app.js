@@ -17,6 +17,9 @@ app.use(bodyParser.json());
   
 app.use(express.static('public'));
 
+app.route('').get((req, res, next) => {
+  res.sendFile('index.html', {root: 'views'})
+})
 
 app.use('/api', apiRouter);
   

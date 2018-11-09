@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Northcoder News API</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+  <link href="https://fonts.googleapis.com/css?family=Montserrat" rel="stylesheet">
+
+  <style>
+    h1, h2, h3, p {font-family: 'Montserrat', sans-serif; padding: 0; margin: 10px;}
+    h1 {font-size: 3em; padding-top:10px; padding-bottom: 20px;}
+    h2 {font-size: 2em}
+    h3 {padding-top: 20px;}
+    .N {color: red}
+    a:link, a:visited {text-decoration: underline; color: red}
+    .page-header {padding: 20px; padding-left: 30px;}
+    .panhead {padding-top: 10px; padding-left: 30px;}
+    .panbody {padding-left: 50px; padding-bottom: 30px;}
+  </style>
+</head>
+<body>
+
+  <div class="page-header">
+    <h1><strong class="N">N</strong>orthcoder <strong class="N">N</strong>ews API <small>(version 1)</small></h1>
+    <p>Link: <a href="https://stormy-river-98715.herokuapp.com">https://stormy-river-98715.herokuapp.com</a></p>
+    <h3>Welcome</h3>
+    <p>Welcome to the documentation for the NC News API</p>
+    <h3>Getting started</h3>
+    <p>Take a look at the following endpoints to find out what you can do inside the NC News API</p>
+  </div>
+
+  <div class="pan">
+    <div class="panhead">
+        <a href="/api"><h2>/api</h2></a>
+    </div>
+    <div class="panbody">
+      <h3>/api</h3>
+      <p>Brings you to this very page!</p>
+      <p><strong>NOTE:</strong> 
+        <br>
+        * Endpoint can be sorted via a query; 
+        <br> 
+        e.g. /comments?sort=votes&by=asc,  /articles?sort=created_at&by=desc
+        <br>
+        and will be displayed in pages, which can also be set within a query (defaults to page 1 and displaying 10 items per page)
+        <br>
+        e.g. /comments?view=20&page=2,   /articles?sort=created_at&by=desc&limit=5&page=1
+      </p>
+    </div>
+  </div>
+
+  <div class="pan">
+      <div class="panhead">
+        <a href="/api/topics"><h2>/topics</h2></a>
+      </div>
+      <div class="panbody">
+        <h3>/topics</h3>
+        <p>GET: Get all the topics*</p>
+        <h3>/topics/:topic_slug/articles</h3>
+        <p>GET: Get all the articles* for a certain topic</p>
+        <p>POST: Add a new article to a topic. This requires a JSON with title and body</p>
+      </div>
+    </div>
+
+    <div class="pan">
+        <div class="panhead">
+          <a href="/api/users"><h2>/users</h2></a>
+        </div>
+        <div class="panbody">
+          <h3>/users</h3>
+          <p>GET: Get all the users*</p>
+          <h3>/users/:username</h3>
+          <p>GET: Get a user by their username</p>
+        </div>
+      </div>
+
+    <div class="pan">
+        <div class="panhead">
+            <a href="/api/articles"><h2>/articles</h2></a>
+        </div>
+        <div class="panbody">
+          <h3>/articles</h3>
+          <p>GET: Get all the articles*</p>
+          <h3>/articles/:article_id</h3>
+          <p>GET: Get an individual article</p>
+          <p>PATCH: Increment or decrement the votes of an article by one using a query. e.g. ?vote=up, ?vote=down</p>
+          <h3>/articles/:article_id/comments</h3>
+          <p>GET: Get all the comments* for an individual article</p>
+          <p>POST: Add a new comment to an article. This requires a JSON object with body and created_by</p>
+        </div>
+      </div>
+
+      <div class="pan">
+          <div class="panhead">
+              <a href="/api/comments"><h2>/comments</h2></a>
+          </div>
+          <div class="panbody">
+            <h3>/comments</h3>
+            <p>GET: Get all the comments*</p>
+            <h3>/comments/:comment_id</h3>
+            <p>GET: Get a comment by its ID</p>
+            <p>PATCH: Increment of decrement the votes of a comment by one. Requires a query of vote = up or down. e.g. ?vote=up</p>
+            <p>DELETE: Deletes a comment</p>
+          </div>
+        </div>
+
+</body>
+</html>

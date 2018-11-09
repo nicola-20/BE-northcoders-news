@@ -6,7 +6,7 @@ const articlesRouter = require("./articles");
 const commentsRouter = require("./comments");
 
 apiRouter.route('').get((req, res, next) => {
-  res.sendFile('index.html', {root: 'views'})
+  res.sendFile('api.html', {root: 'views'})
 })
 
 apiRouter.use("/topics", topicsRouter);

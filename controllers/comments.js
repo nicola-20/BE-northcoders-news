@@ -5,7 +5,12 @@ const getComments = (req, res, next) => {
   const sortBy = req.query.by === 'asc' ? 1 : req.query.by === 'desc' ? -1 : 0
   let sort = {}
   sort[sortField] = sortBy
-  Comment.find().sort({[sortField]: sortBy})
+  const page = req.query.page || 1
+  const itemsOnPage = parseInt(req.query.limit) || 10
+  const itemsToSkip = itemsOnPage * (page - 1)
+  Comment.find()
+  .sort({[sortField]: sortBy})
+  .limit(itemsOnPage).skip(itemsToSkip)
   .populate('belongs_to', 'title -_id')
   .populate('created_by', 'name -_id')
   .then((comments) => {
@@ -32,9 +37,13 @@ const getCommentsByArticleID = (req, res, next) => {
   const sortBy = req.query.by === 'asc' ? 1 : req.query.by === 'desc' ? -1 : 0
   let sort = {}
   sort[sortField] = sortBy
+  const page = req.query.page || 1
+  const itemsOnPage = parseInt(req.query.limit) || 10
+  const itemsToSkip = itemsOnPage * (page - 1)
   Comment
   .find( { belongs_to: article_id } )
   .sort({[sortField]: sortBy})
+  .limit(itemsOnPage).skip(itemsToSkip)
   .populate('belongs_to', 'title -_id')
   .populate('created_by', 'name -_id')
   .then((comments) => {

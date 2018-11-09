@@ -27,7 +27,7 @@ app.use('/*', (req, res, next) => {
 
 
 app.use((err, req, res, next) => {
-console.log(err)
+// console.log(err)
   if (err.status) { // if err has a status
 
     if (err.msg || err.message) {

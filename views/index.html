@@ -25,7 +25,16 @@
     <div class="panbody">
       <h3>/api</h3>
       <p>Brings you to this very page!</p>
-      <p><strong>NOTE:</strong> * Endpoint can be sorted via a query; e.g. /comments?sort=votes&by=asc, /articles?sort=created_at&by=desc</p>
+      <p><strong>NOTE:</strong> 
+        <br>
+        * Endpoint can be sorted via a query; 
+        <br> 
+        e.g. /comments?sort=votes&by=asc,  /articles?sort=created_at&by=desc
+        <br>
+        and will be displayed in pages, which can also be set within a query (defaults to page 1 and displaying 10 items per page)
+        <br>
+        e.g. /comments?view=20&page=2,   /articles?sort=created_at&by=desc&limit=5&page=1
+      </p>
     </div>
   </div>
 

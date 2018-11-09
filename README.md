@@ -95,16 +95,25 @@ GET /api
 ```http
 GET /api/topics
 # Get all the topics
+
 # Has functionality to sort using a query
 # e.g: `/api/topics?sort=title&by=asc`
+
+# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# e.g: `/api/topics?limit=10&page=1`
 ```
 
 ```http
 GET /api/topics/:topic_slug/articles
 # Return all the articles for a certain topic
 # e.g: `/api/topics/football/articles`
+
 # Has functionality to sort using a query
 # e.g: `/api/topics/coding/articles?sort=votes&by=desc`
+
+# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# e.g: `/api/topics/football/articles?limit=20&page=2`
+# e.g: `/api/topics/coding/articles?sort=votes&by=desc&limit=10&page=3`
 ```
 
 ```http
@@ -117,8 +126,12 @@ POST /api/topics/:topic_slug/articles
 GET /api/users/
 # e.g: `/api/users`
 # Returns an array of all the User objects
+
 # Has functionality to sort using a query
 # e.g: `/api/users?sort=username&by=asc`
+
+# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# e.g: `/api/users?limit=3&page=1`
 ```
 
 ```http
@@ -130,8 +143,13 @@ GET /api/users/:username
 ```http
 GET /api/articles
 # Returns all the articles
+
 # Has functionality to sort using a query
 # e.g: `/api/articles?sort=created_at&by=desc`
+
+# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# e.g: `/api/articles?limit=10`
+# e.g: `/api/articles?sort=created_at&by=desc&limit=5&page=2`
 ```
 
 ```http
@@ -148,8 +166,12 @@ PATCH /api/articles/:article_id
 ```http
 GET /api/articles/:article_id/comments
 # Get all the comments for a individual article
+
 # Has functionality to sort using a query
 # e.g: `/api/articles/:article_id/comments?sort=created_at&by=asc`
+
+# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# e.g: `/api/articles/:article_id/comments?limit=10&page=3`
 ```
 
 ```http
@@ -160,9 +182,13 @@ POST /api/articles/:article_id/comments
 ```http
 GET /api/comments/
 # Return all comments
+
 # Has functionality to sort using a query
 # e.g: `/api/comments?sort=created_at&by=desc`
 # e.g: `/api/comments?sort=votes&by=asc`
+
+# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# e.g: `/api/comments?limit=100`
 ```
 ```http
 GET /api/comments/:comment_id

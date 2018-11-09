@@ -25,6 +25,7 @@
     <div class="panbody">
       <h3>/api</h3>
       <p>Brings you to this very page!</p>
+      <p><strong>NOTE:</strong> * Endpoint can be sorted via a query; e.g. /comments?sort=votes&by=asc, /articles?sort=created_at&by=desc</p>
     </div>
   </div>
 
@@ -34,9 +35,9 @@
       </div>
       <div class="panbody">
         <h3>/topics</h3>
-        <p>GET: Get all the topics</p>
+        <p>GET: Get all the topics*</p>
         <h3>/topics/:topic_slug/articles</h3>
-        <p>GET: Get all the articles for a certain topic</p>
+        <p>GET: Get all the articles* for a certain topic</p>
         <p>POST: Add a new article to a topic. This requires a JSON with title and body</p>
       </div>
     </div>
@@ -47,7 +48,7 @@
         </div>
         <div class="panbody">
           <h3>/users</h3>
-          <p>GET: Get all the users</p>
+          <p>GET: Get all the users*</p>
           <h3>/users/:username</h3>
           <p>GET: Get a user by their username</p>
         </div>
@@ -59,12 +60,12 @@
         </div>
         <div class="panbody">
           <h3>/articles</h3>
-          <p>GET: Get all the articles</p>
+          <p>GET: Get all the articles*</p>
           <h3>/articles/:article_id</h3>
           <p>GET: Get an individual article</p>
           <p>PATCH: Increment or decrement the votes of an article by one using a query. e.g. ?vote=up, ?vote=down</p>
           <h3>/articles/:article_id/comments</h3>
-          <p>GET: Get all the comments for an individual article</p>
+          <p>GET: Get all the comments* for an individual article</p>
           <p>POST: Add a new comment to an article. This requires a JSON object with body and created_by</p>
         </div>
       </div>
@@ -75,7 +76,7 @@
           </div>
           <div class="panbody">
             <h3>/comments</h3>
-            <p>GET: Get all the comments</p>
+            <p>GET: Get all the comments*</p>
             <h3>/comments/:comment_id</h3>
             <p>GET: Get a comment by its ID</p>
             <p>PATCH: Increment of decrement the votes of a comment by one. Requires a query of vote = up or down. e.g. ?vote=up</p>

@@ -14,7 +14,7 @@ This is a 'Northcoders News' API using a northcoders_news database hosted on mLa
 
 Dependencies:
 
-```
+```js
 body-parser: ^1.15.2
 express: ^4.16.3
 heroku: ^7.18.5
@@ -24,7 +24,7 @@ mongoose: ^5.3.10
 
 Dev Dependencies:
 
-```
+```js
 chai: ^4.1.2,
 mocha: ^5.0.5,
 supertest: ^3.0.0,
@@ -38,18 +38,18 @@ nodemon: ^1.17.4
   https://github.com/nicola-20/BE2-northcoders-news
   ```
 2. Navigate into folder and install the dependencies
-  ```
+  ```js
   npm install
   ```
 3. Create a ```/config``` directory with an ```index.js``` file containing:
-```
+```js
 DB_URL
 datapath
 ```
   Set these values for each environment; 'test', 'development' and 'production', and export them to be used elsewhere
 
   E.g.:
-  ```
+  ```js
   exports.DB_URL = process.env.NODE_ENV === 'test' ? 'mongodb://localhost:27017/northcoders_news_test' : 'mongodb://localhost:27017/northcoders_news'
 
 exports.datapath = process.env.NODE_ENV === 'test' 
@@ -60,12 +60,12 @@ exports.datapath = process.env.NODE_ENV === 'test'
 4. Run ```mongod``` within a new terminal
 
 5. To seed the database:
-```
+```js
 npm run seed:dev
 ```
 
 6. To run the development server:
-```
+```js
 npm run dev
 ```
 
@@ -99,7 +99,7 @@ GET /api/topics
 # Has functionality to sort using a query
 # e.g: `/api/topics?sort=title&by=asc`
 
-# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# Displays in pages, which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/topics?limit=10&page=1`
 ```
 
@@ -111,7 +111,7 @@ GET /api/topics/:topic_slug/articles
 # Has functionality to sort using a query
 # e.g: `/api/topics/coding/articles?sort=votes&by=desc`
 
-# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# Displays in pages - which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/topics/football/articles?limit=20&page=2`
 # e.g: `/api/topics/coding/articles?sort=votes&by=desc&limit=10&page=3`
 ```
@@ -130,7 +130,7 @@ GET /api/users/
 # Has functionality to sort using a query
 # e.g: `/api/users?sort=username&by=asc`
 
-# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# Displays in pages, which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/users?limit=3&page=1`
 ```
 
@@ -147,7 +147,7 @@ GET /api/articles
 # Has functionality to sort using a query
 # e.g: `/api/articles?sort=created_at&by=desc`
 
-# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# Displays in pages, which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/articles?limit=10`
 # e.g: `/api/articles?sort=created_at&by=desc&limit=5&page=2`
 ```
@@ -170,7 +170,7 @@ GET /api/articles/:article_id/comments
 # Has functionality to sort using a query
 # e.g: `/api/articles/:article_id/comments?sort=created_at&by=asc`
 
-# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# Displays in pages, which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/articles/:article_id/comments?limit=10&page=3`
 ```
 
@@ -187,7 +187,7 @@ GET /api/comments/
 # e.g: `/api/comments?sort=created_at&by=desc`
 # e.g: `/api/comments?sort=votes&by=asc`
 
-# Displays in pages, which can be set using a query (defaults to first page, displaying 10 items per page)
+# Displays in pages, which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/comments?limit=100`
 ```
 ```http
@@ -205,10 +205,6 @@ PATCH /api/comments/:comment_id
 DELETE /api/comments/:comment_id
 # Deletes a comment
 ```
-
-### Deployment
-
-To deploy this app, use mLab to host the database, then create the app within Heroku. Make sure to set your config for heroku before pushing.
 
 ### Built With:
 - Node.js

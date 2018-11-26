@@ -10,12 +10,12 @@ const testData = require('../seed/testData')
 //API
 describe('/api', () => {
 
-  let topicDocs, userDocs, articleDocs, commentDocs
+  let topicDocs, userDocs, articleDocs, commentDocs;
   const wrongID = mongoose.Types.ObjectId();
 
   beforeEach(() => {
     return seedDB(testData)
-      .then((docs) => {
+      .then(docs => {
         [ topicDocs, userDocs, articleDocs, commentDocs ] = docs
       })
   })
@@ -43,9 +43,10 @@ describe('/api', () => {
           .get(`/api/topics/${topicDocs[0].slug}/articles`)
           .expect(200)
           .then(( { body: { articles } } ) => {
-            expect(articles.length).to.equal(articleDocs.filter((article) => {
+            const articlesFilteredByTopic = articleDocs.filter((article) => {
               return article.belongs_to === topicDocs[0].slug
-            }).length)
+            })
+            expect(articles.length).to.equal(articlesFilteredByTopic.length)
             expect(articles[0].belongs_to).to.equal(topicDocs[0].slug)
             expect(articles[1].belongs_to).to.equal(topicDocs[0].slug)
           })
@@ -115,6 +116,7 @@ describe('/api', () => {
           .expect(200)
           .then(( { body: { article } } ) => {
             expect(article.title).to.equal(articleDocs[0].title)
+            expect(article._id).to.equal(`${articleDocs[0]._id}`)
           })
       });
       it('PATCH - Returns status 200 and the updated article with votes incremented up', () => {
@@ -122,6 +124,7 @@ describe('/api', () => {
           .patch(`/api/articles/${articleDocs[1]._id}?vote=up`)
           .expect(200)
           .then(( { body: { article } } ) => {
+            expect(article._id).to.equal(`${articleDocs[1]._id}`)
             expect(article.votes).to.equal(articleDocs[1].votes + 1)
             expect(article.title).to.equal(articleDocs[1].title)
           })
@@ -131,6 +134,7 @@ describe('/api', () => {
           .patch(`/api/articles/${articleDocs[1]._id}?vote=down`)
           .expect(200)
           .then(( { body: { article } } ) => {
+            expect(article._id).to.equal(`${articleDocs[1]._id}`)
             expect(article.votes).to.equal(articleDocs[1].votes - 1)
             expect(article.title).to.equal(articleDocs[1].title)
           })
@@ -144,12 +148,11 @@ describe('/api', () => {
         .get(`/api/articles/${articleDocs[1]._id}/comments`)
         .expect(200)
         .then(({ body: { comments } }) => {
-          expect(comments.length).to.equal(commentDocs.filter((comment) => {
+          const commentsFilteredByArticle = commentDocs.filter((comment) => {
             return comment.belongs_to === articleDocs[1]._id
-          }).length)
-          expect(comments[0].votes).to.equal(commentDocs.filter((comment) => {
-            return comment.belongs_to === articleDocs[1]._id
-          })[0].votes)
+          })
+          expect(comments.length).to.equal(commentsFilteredByArticle.length)
+          expect(comments[0].votes).to.equal(commentsFilteredByArticle[0].votes)
         })
       });
       it('POST - returns status 201 and posted comment, adds comment to article', () => {
@@ -190,6 +193,7 @@ describe('/api', () => {
         .get(`/api/comments/${commentDocs[2]._id}`)
         .expect(200)
         .then(( { body: { comment } } ) => {
+          expect(comment._id).to.equal(`${commentDocs[2]._id}`)
           expect(comment.body).to.equal(commentDocs[2].body)
           expect(Object.keys(comment)).to.eql(['votes', '_id', 'body',  'belongs_to', 'created_by', 'created_at', '__v'])
         })
@@ -199,6 +203,7 @@ describe('/api', () => {
           .patch(`/api/comments/${commentDocs[2]._id}?vote=up`)
           .expect(200)
           .then(( { body: { comment } } ) => {
+            expect(comment._id).to.equal(`${commentDocs[2]._id}`)
             expect(comment.votes).to.equal(commentDocs[2].votes + 1)
             expect(comment.body).to.equal(commentDocs[2].body)
           })
@@ -208,11 +213,12 @@ describe('/api', () => {
           .patch(`/api/comments/${commentDocs[2]._id}?vote=down`)
           .expect(200)
           .then(( { body: { comment } } ) => {
+            expect(comment._id).to.equal(`${commentDocs[2]._id}`)
             expect(comment.votes).to.equal(commentDocs[2].votes - 1)
             expect(comment.body).to.equal(commentDocs[2].body)
           })
       });
-      it('DELETE - returns status', () => {
+      it('DELETE - returns status 200', () => {
         const postedComment = {
           "body": "This is my new comment", 
           "created_by": `${userDocs[1]._id}`
@@ -226,6 +232,7 @@ describe('/api', () => {
         .then(() => {
           return request
           .delete(`/api/comments/${comment._id}`)
+          .expect(200)
             .then(( { body } ) => {
               expect(body.message).to.equal('Comment was deleted')
             })

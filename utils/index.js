@@ -5,8 +5,10 @@ const formatArticles = (articleData, topicDocs, userDocs) => {
     return {
       ...article,
       votes: Math.floor(Math.random() * 100) + 1,
-      belongs_to: _.find(topicDocs, (topic) => {return topic.slug === article.topic}, 0).slug,
+      // belongs_to: _.find(topicDocs, (topic) => {return topic.slug === article.topic}, 0).slug,
+      belongs_to: topicDocs.find((topic) => {return topic.slug === article.topic}).slug,
       created_by: _.sample(userDocs)._id
+      // [Math.floor(Math.random() * (userDocs.length)) + 1]
     }
   })
 }
@@ -14,8 +16,9 @@ const formatArticles = (articleData, topicDocs, userDocs) => {
 const formatComments = (commentData, userDocs, articleDocs) => {
   return commentData.map((comment) => {
     return {
-      ... comment,
-      belongs_to: _.find(articleDocs, (article) => {return article.title === comment.belongs_to}, 0)._id,
+      ...comment,
+      // belongs_to: _.find(articleDocs, (article) => {return article.title === comment.belongs_to}, 0)._id,
+      belongs_to: articleDocs.find(article => {return article.title === comment.belongs_to})._id,
       created_by: _.sample(userDocs)._id
     }
   })

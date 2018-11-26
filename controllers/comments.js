@@ -56,7 +56,7 @@ const getCommentsByArticleID = (req, res, next) => {
 const addCommentToArticle = (req, res, next) => {
   const { body, created_by } = req.body
   const { article_id } = req.params
-  comment = new Comment({ body, created_by, belongs_to: article_id })
+  const comment = new Comment({ body, created_by, belongs_to: article_id })
   comment.save()
   .then(() => {
     return Comment.populate(comment, {path: 'belongs_to', select: 'title -_id'})

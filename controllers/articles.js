@@ -3,7 +3,7 @@ const { Article, Comment } = require('../models')
 const addCommentCount = (article) => {
   return Comment.countDocuments({ belongs_to: article._id })
   .then((numComments) => {
-    return { ...article._doc, comment_count: numComments }
+    return { ...article, comment_count: numComments }
   })
 }
 
@@ -19,6 +19,7 @@ const getArticles = (req, res, next) => {
   .sort({[sortField]: sortBy})
   .limit(itemsOnPage).skip(itemsToSkip)
   .populate('created_by', 'username name -_id')
+  .lean()
   .then((articles) => {
     return Promise.all(articles.map(addCommentCount))
   })
@@ -32,6 +33,7 @@ const getArticleByArticleID = (req, res, next) => {
   const { article_id } = req.params
   Article.findById(article_id)
   .populate('created_by', 'username name -_id')
+  .lean()
   .then((article) => {
     if (!article) return Promise.reject({ status: 404, msg: `Article not found for ID: ${article_id}` })
     else return addCommentCount(article)
@@ -72,6 +74,7 @@ const getArticlesByTopic = (req, res, next) => {
   .sort({[sortField]: sortBy})
   .limit(itemsOnPage).skip(itemsToSkip)
   .populate('created_by', 'username name -_id')
+  .lean()
   .then((articles) => {
     return Promise.all(articles.map(addCommentCount))
   })
@@ -83,8 +86,7 @@ const getArticlesByTopic = (req, res, next) => {
 
 const addArticle = (req, res, next) => {
   const { topic_slug } = req.params
-  // const { title, body, created_by } = req.body
-  article = new Article({ ...req.body, belongs_to: topic_slug })
+  const article = new Article({ ...req.body, belongs_to: topic_slug })
   article.save()
     .then((article) => {
       if (!article) {

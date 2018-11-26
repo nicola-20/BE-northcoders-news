@@ -3,18 +3,18 @@ const { Topic, User, Article, Comment } = require('../models')
 const { formatArticles, formatComments } = require('../utils')
 
 const seedDB = ({ topicData, userData, articleData, commentData }) => {
-  // console.log('Seeding the database..')
+  console.log('Seeding the database..')
   return mongoose.connection.dropDatabase()
   .then(() => {
-    // console.log('Dropped the database')
+    console.log('Dropped the database')
     return Promise.all([
       Topic.insertMany(topicData),
       User.insertMany(userData)
     ])
   })
   .then(([ topicDocs, userDocs ]) => {
-    // console.log(`${topicDocs.length} documents added to 'topics'`)
-    // console.log(`${userDocs.length} documents added to 'users'`)
+    console.log(`${topicDocs.length} documents added to 'topics'`)
+    console.log(`${userDocs.length} documents added to 'users'`)
     return Promise.all([
       topicDocs, 
       userDocs,
@@ -22,7 +22,7 @@ const seedDB = ({ topicData, userData, articleData, commentData }) => {
     ])
   })
   .then(([ topicDocs, userDocs, articleDocs ]) => {
-    // console.log(`${articleDocs.length} documents added to 'articles'`)
+    console.log(`${articleDocs.length} documents added to 'articles'`)
     return Promise.all([
       topicDocs, 
       userDocs, 
@@ -31,7 +31,7 @@ const seedDB = ({ topicData, userData, articleData, commentData }) => {
     ])
   })
   .then(([ topicDocs, userDocs, articleDocs, commentDocs ]) => {
-    // console.log(`${commentDocs.length} documents added to 'comments'`)
+    console.log(`${commentDocs.length} documents added to 'comments'`)
     return Promise.all([
       topicDocs,
       userDocs,

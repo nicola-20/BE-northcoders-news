@@ -1,8 +1,9 @@
 const express = require('express');
-const app = express();
+const cors = require('cors')
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const apiRouter = require('./routes/api');
+const app = express();
 const { DB_URL } = process.env.NODE_ENV === 'production' ? process.env : require('./config');
 
 mongoose.connect(DB_URL, { useNewUrlParser: true })
@@ -12,6 +13,8 @@ mongoose.connect(DB_URL, { useNewUrlParser: true })
 
 
 app.set('view engine', 'ejs');
+
+app.use(cors())
 
 app.use(bodyParser.json());
   
@@ -27,8 +30,6 @@ app.use('/*', (req, res, next) => {
   next({ status: 404, msg: 'Path not found' })
 })
   
-
-
 app.use((err, req, res, next) => {
 // console.log(err)
   if (err.status) { // if err has a status

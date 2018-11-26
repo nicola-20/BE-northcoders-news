@@ -6,7 +6,7 @@ const formatArticles = (articleData, topicDocs, userDocs) => {
       ...article,
       votes: Math.floor(Math.random() * 100) + 1,
       // belongs_to: _.find(topicDocs, (topic) => {return topic.slug === article.topic}, 0).slug,
-      belongs_to: topicDocs.find((topic) => {return topic.slug === article.topic}).slug,
+      belongs_to: topicDocs.find((topic) => {return topic.slug === article.topic}).title,
       created_by: _.sample(userDocs)._id
       // [Math.floor(Math.random() * (userDocs.length)) + 1]
     }

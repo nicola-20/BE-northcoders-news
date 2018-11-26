@@ -12,7 +12,7 @@ const getComments = (req, res, next) => {
   .sort({[sortField]: sortBy})
   .limit(itemsOnPage).skip(itemsToSkip)
   .populate('belongs_to', 'title -_id')
-  .populate('created_by', 'name -_id')
+  .populate('created_by', 'name username -_id')
   .then((comments) => {
     res.status(200).send({ comments })
   })

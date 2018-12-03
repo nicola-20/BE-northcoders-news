@@ -23,7 +23,7 @@ const getCommentByCommentID = (req, res, next) => {
   const { comment_id } = req.params
   Comment.findById(comment_id)
   .populate('belongs_to', 'title -_id')
-  .populate('created_by', 'name -_id')
+  .populate('created_by', 'name username -_id')
   .then((comment) => {
     if (!comment) return Promise.reject({ status: 404, msg: `Comment not found for ID: ${comment_id}` })
     res.status(200).send({ comment })
@@ -45,7 +45,7 @@ const getCommentsByArticleID = (req, res, next) => {
   .sort({[sortField]: sortBy})
   .limit(itemsOnPage).skip(itemsToSkip)
   .populate('belongs_to', 'title -_id')
-  .populate('created_by', 'name -_id')
+  .populate('created_by', 'name username -_id')
   .then((comments) => {
     if (!comments[0]) return Promise.reject({ status: 404, msg: `Comments not found for Article ID: ${article_id}` })
     res.status(200).send({ comments })
@@ -62,7 +62,7 @@ const addCommentToArticle = (req, res, next) => {
     return Comment.populate(comment, {path: 'belongs_to', select: 'title -_id'})
   })
   .then(() => {
-    return Comment.populate(comment, {path: 'created_by', select: 'name -_id'})
+    return Comment.populate(comment, {path: 'created_by', select: 'name username -_id'})
   })
   .then((comment) => {
     res.status(201).send({ comment })

@@ -228,8 +228,9 @@ describe('/api', () => {
           .send(postedComment)
           .then(( { body: { comment } } ) => {
             expect(comment.body).to.equal(postedComment.body)
+            return comment
           })
-        .then(() => {
+        .then((comment) => {
           return request
           .delete(`/api/comments/${comment._id}`)
           .expect(200)

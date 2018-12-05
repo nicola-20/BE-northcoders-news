@@ -104,10 +104,8 @@ const getArticlesByTopic = (req, res, next) => {
 
 const addArticle = (req, res, next) => {
   const { topic_slug } = req.params;
-  console.log(topic_slug, 'topic slug')
   Topic.findOne({ slug: topic_slug })
     .then(topic => {
-      console.log(topic, 'topic from db')
       if (!topic) {
         return Promise.reject({
           status: 400,
@@ -115,10 +113,8 @@ const addArticle = (req, res, next) => {
         });
       } else {
         const article = new Article({ ...req.body, belongs_to: topic_slug });
-        console.log(article, 'article')
         article.save()
         .then(article => {
-          console.log(article, 'article')
           if (!article) {
             return Promise.reject({
               status: 400,

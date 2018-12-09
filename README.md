@@ -1,6 +1,6 @@
 ## Northcoders News API
 
-https://stormy-river-98715.herokuapp.com/api/
+https://nd-be-news.herokuapp.com/ 
 
 
 ### Getting Started

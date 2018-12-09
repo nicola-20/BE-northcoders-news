@@ -14,7 +14,7 @@ This is a 'Northcoders News' API using a northcoders_news database hosted on mLa
 
 Dependencies:
 
-```js
+```
 body-parser: ^1.15.2
 express: ^4.16.3
 heroku: ^7.18.5
@@ -24,7 +24,7 @@ mongoose: ^5.3.10
 
 Dev Dependencies:
 
-```js
+```
 chai: ^4.1.2,
 mocha: ^5.0.5,
 supertest: ^3.0.0,
@@ -99,7 +99,7 @@ GET /api/topics
 # Has functionality to sort using a query
 # e.g: `/api/topics?sort=title&by=asc`
 
-# Displays in pages, which can be set using a query (defaults to view first page and display 10 items per page)
+# Displays in pages which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/topics?limit=10&page=1`
 ```
 
@@ -130,7 +130,7 @@ GET /api/users/
 # Has functionality to sort using a query
 # e.g: `/api/users?sort=username&by=asc`
 
-# Displays in pages, which can be set using a query (defaults to view first page and display 10 items per page)
+# Displays in pages which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/users?limit=3&page=1`
 ```
 
@@ -147,7 +147,7 @@ GET /api/articles
 # Has functionality to sort using a query
 # e.g: `/api/articles?sort=created_at&by=desc`
 
-# Displays in pages, which can be set using a query (defaults to view first page and display 10 items per page)
+# Displays in pages which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/articles?limit=10`
 # e.g: `/api/articles?sort=created_at&by=desc&limit=5&page=2`
 ```
@@ -170,7 +170,7 @@ GET /api/articles/:article_id/comments
 # Has functionality to sort using a query
 # e.g: `/api/articles/:article_id/comments?sort=created_at&by=asc`
 
-# Displays in pages, which can be set using a query (defaults to view first page and display 10 items per page)
+# Displays in pages which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/articles/:article_id/comments?limit=10&page=3`
 ```
 
@@ -187,7 +187,7 @@ GET /api/comments/
 # e.g: `/api/comments?sort=created_at&by=desc`
 # e.g: `/api/comments?sort=votes&by=asc`
 
-# Displays in pages, which can be set using a query (defaults to view first page and display 10 items per page)
+# Displays in pages which can be set using a query (defaults to view first page and display 10 items per page)
 # e.g: `/api/comments?limit=100`
 ```
 ```http
